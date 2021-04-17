@@ -86,6 +86,9 @@ def search(problem, fringe):
             for candidate in candidate_successors:
                 fringe.push(candidate)
 
+
+# cuestion 1
+#=============
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first
@@ -100,6 +103,26 @@ def depthFirstSearch(problem):
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
+    expand = []
+    depthFirstSearchAux( problem.getStartState(), problem, [], expand)
+    return expand
+
+
+def depthFirstSearchAux( state, problem, visited, expand):
+    if(problem.isGoalState( state )):
+        return True
+    find = False
+    visited+=[state]
+    sus = filter( lambda e: e[0] not in visited , problem.getSuccessors(state))
+    if( sus != []):
+        for s in sus:
+                expand += [s[1]]
+                find = depthFirstSearchAux( s[0], problem, visited,expand )
+                if(find):
+                    return True
+    if(not find):
+        expand.pop()
+
 
 def breadthFirstSearch(problem):
     """
