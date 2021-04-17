@@ -1,3 +1,4 @@
+*.pyc
 ghostAgents.pyc
 graphicsDisplay.pyc
 graphicsUtils.pyc
