@@ -86,9 +86,6 @@ def search(problem, fringe):
             for candidate in candidate_successors:
                 fringe.push(candidate)
 
-
-# cuestion 1
-#=============
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first
@@ -103,34 +100,17 @@ def depthFirstSearch(problem):
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
-    expand = []
-    depthFirstSearchAux( problem.getStartState(), problem, [], expand)
-    return expand
-
-
-def depthFirstSearchAux( state, problem, visited, expand):
-    if(problem.isGoalState( state )):
-        return True
-    find = False
-    visited+=[state]
-    sus = filter( lambda e: e[0] not in visited , problem.getSuccessors(state))
-    if( sus != []):
-        for s in sus:
-                expand += [s[1]]
-                find = depthFirstSearchAux( s[0], problem, visited,expand )
-                if(find):
-                    return True
-    if(not find):
-        expand.pop()
-
+    return generalSearch(problem, util.Stack())
 
 def breadthFirstSearch(problem):
     """
     Search the shallowest nodes in the search tree first.
     """
+    return generalSearch(problem, util.Queue())
 
 def uniformCostSearch(problem):
     "Search the node of least total cost first."
+    return generalInformedSearch(problem, util.PriorityQueue(), nullHeuristic)
 
 def nullHeuristic(state, problem=None):
     """
@@ -141,6 +121,32 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     "Search the node that has the lowest combined cost and heuristic first."
+    return generalInformedSearch(problem, util.PriorityQueue(), heuristic)
+
+def generalSearch(problem, expanded):
+    visited = []
+    expanded.push((problem.getStartState(), []))
+    while not expanded.isEmpty():
+        (state, path) = expanded.pop()
+        if problem.isGoalState(state):
+            return path
+        if state not in visited:
+            visited += [state]
+            for (successor, direction, _) in problem.getSuccessors(state):
+                expanded.push((successor, path + [direction]))
+
+def generalInformedSearch(problem, expanded, heuristic):
+    visited = []
+    expanded.push((problem.getStartState(), [], 0), 0)
+    while not expanded.isEmpty():
+        (state, path, cost) = expanded.pop()
+        if problem.isGoalState(state):
+            return path
+        if state not in visited:
+            visited += [state]
+            for (successor, direction, nextCost) in problem.getSuccessors(state):
+                f = cost + nextCost + heuristic(successor, problem)
+                expanded.push((successor, path + [direction], cost + nextCost), f)
 
 # Abbreviations
 bfs = breadthFirstSearch
