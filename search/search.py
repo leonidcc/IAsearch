@@ -125,16 +125,15 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
 def generalSearch(problem, expanded):
     visited = []
-    path = []
-    expanded.push((problem.getStartState(), path ))
+    expanded.push((problem.getStartState(), []))
     while not expanded.isEmpty():
         (state, path) = expanded.pop()
         if problem.isGoalState(state):
             return path
         if state not in visited:
             visited += [state]
-            for (successor, motion, _) in problem.getSuccessors(state):
-                expanded.push((successor, path + [motion]))
+            for (successor, direction, _) in problem.getSuccessors(state):
+                expanded.push((successor, path + [direction]))
 
 def generalInformedSearch(problem, expanded, heuristic):
     visited = []
@@ -145,62 +144,13 @@ def generalInformedSearch(problem, expanded, heuristic):
             return path
         if state not in visited:
             visited += [state]
-            for (successor, direction, nextCost) in problem.getSuccessors(state):
-                f = cost + nextCost + heuristic(successor, problem)
-                expanded.push((successor, path + [direction], cost + nextCost), f)
+            for (successor, direction, newCost) in problem.getSuccessors(state):
+                g = cost + newCost
+                h = heuristic(successor, problem)
+                expanded.push((successor, path + [direction], g), g + h)
 
 # Abbreviations
 bfs = breadthFirstSearch
 dfs = depthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
-
-
-
-
-
-
-# ignorar
-
-    # expand = []
-    # depthFirstSearchAux( problem.getStartState(), problem, [], expand)
-    # return expand
-    # return generalSearch(problem, util.Stack(), 0)
-
-
-
-# def depthFirstSearchAux( state, problem, visited, expand):
-#     if(problem.isGoalState( state )):
-#         return True
-#     find = False
-#     visited+=[state]
-#     sus = filter( lambda e: e[0] not in visited , problem.getSuccessors(state))
-#     if( sus != []):
-#         for s in sus:
-#                 expand += [s[1]]
-#                 find = depthFirstSearchAux( s[0], problem, visited,expand )
-#                 if(find):
-#                     return True
-#     if(not find):
-#         expand.pop()
-
-
-#     solve = []
-#     breadthFirstSearchAux(problem, problem.getSuccessors(problem.getStartState()), [problem.getStartState()],solve)
-#     print(solve)
-#     return []
-#
-# def breadthFirstSearchAux(problem, levelNodes,visited,solve):
-#     print("level",levelNodes)
-#     levelSigNodes = []
-#     for node in levelNodes:
-#         visited+=[node[0]]
-#         solve+=[node]
-#         if(problem.isGoalState(node[0])):
-#             # print("GANE", padre)
-#             return True
-#         levelSigNodes += filter( lambda e: e[0] not in visited , problem.getSuccessors(node[0]))
-#     # print("level2", levelSigNodes)
-#     # print(levelSigNodes,visited)
-#
-#     return breadthFirstSearchAux(problem, levelSigNodes,visited,solve)
