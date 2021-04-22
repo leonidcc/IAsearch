@@ -344,21 +344,21 @@ class CornersProblem(search.SearchProblem):
 # Cuestion 6
 
 """
-La heurística que propusimos calcula la distancia de Manhattan desde la posición del
-Pacman hasta la esquina sin visitar más cercana (Esq1). Si existen más esquinas no
-visitadas, entonces se le suma la distancia desde Esq1 hasta su esquina más cercana
-aún no visitada (Esq2), y se repite esto desde Esq2, hasta alcanzar la última esquina.
-De esta forma, h(n) y h(n'), con n' sucesor de n, sólo varían en la distancia entre el
-Pacman y la esquina más cercana, con lo que puede ocurrir que:
+La heuristica que propusimos calcula la distancia de Manhattan desde la posicion del
+Pacman hasta la esquina sin visitar mas cercana (Esq1). Si existen mas esquinas no
+visitadas, entonces se le suma la distancia desde Esq1 hasta su esquina mas cercana
+aun no visitada (Esq2), y se repite esto desde Esq2. Esto hasta alcanzar la ultima
+esquina. De esta forma, h(n) y h(n'), con n' sucesor de n, solo varian en la distancia
+entre el Pacman y la esquina mas cercana, con lo que puede ocurrir que:
 -dist(n, Esq1) > dist(n', Esq1) -> m = h(n) = c(n, n') + h(n') = 1 + (m-1)
--dist(n, Esq1) < dist(n', Esq1) -> Si Esq1 sigue siendo la esquina más cercana, m = h(n) < c(n, n') + h(n') = 1 + (m+1)
-                                   Si Esq1 no es más la esquina más cercana, m = h(n) < c(n, n') + h(n') = 1 + (m-1),
-                                   ya que, si no fuese h(n') = m-1, Esq1 estaría a lo sumo a la misma distancia
+-dist(n, Esq1) < dist(n', Esq1) -> Si Esq1 sigue siendo la esquina mas cercana, m = h(n) < c(n, n') + h(n') = 1 + (m+1)
+                                   Si Esq1 ya no es la esquina mas cercana, m = h(n) < c(n, n') + h(n') = 1 + (m-1),
+                                   ya que, si no fuese h(n') = m-1, Esq1 estaria a lo sumo a la misma distancia
 
-En los tres casos se cumple la monotonicidad. Por lo tanto, la heurística es consistente.
+En los tres casos se cumple la monotonicidad. Por lo tanto, la heuristica es consistente.
 
-Además, es admisible ya que la suma de las distancias de Manhattan son la menor distancia
-que el Pacman debe recorrer, sin tener en cuenta las paredes, con lo que la heurística
+Ademas, es admisible ya que la suma de las distancias de Manhattan son la menor distancia
+que el Pacman debe recorrer, sin tener en cuenta las paredes, con lo que la heuristica
 nunca sobreestima el costo de llegar a la meta.
 """
 
