@@ -385,7 +385,7 @@ def cornersHeuristic(state, problem):
             dists += [(util.manhattanDistance(nextPoint, c), c)]
         (minDist, nearestCorner) = min(dists, key = lambda x: x[0])
         dist += minDist
-        cornersLeft.remove(nearest)
+        cornersLeft.remove(nearestCorner)
         nextPoint = nearestCorner
     return dist
 
