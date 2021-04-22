@@ -252,9 +252,7 @@ def euclideanHeuristic(position, problem, info={}):
     xy2 = problem.goal
     return ( (xy1[0] - xy2[0]) ** 2 + (xy1[1] - xy2[1]) ** 2 ) ** 0.5
 
-#####################################################
-# This portion is incomplete.  Time to write code!  #
-#####################################################
+# Cuestion 5
 
 class CornersProblem(search.SearchProblem):
     """
@@ -286,7 +284,7 @@ class CornersProblem(search.SearchProblem):
     def isGoalState(self, state):
         "Returns whether this search state is a goal state of the problem"
         isGoal = state[1] == []
-        
+
         # For display purposes only
         if isGoal:
             self._visitedlist.append(state[0])
@@ -343,6 +341,8 @@ class CornersProblem(search.SearchProblem):
         return len(actions)
 
 
+# Cuestion 6
+
 def cornersHeuristic(state, problem):
     """
     A heuristic for the CornersProblem that you defined.
@@ -356,11 +356,19 @@ def cornersHeuristic(state, problem):
     on the shortest path from the state to a goal of the problem; i.e.
     it should be admissible (as well as consistent).
     """
-    corners = problem.corners # These are the corner coordinates
-    walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
-
-    "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    pacmanPosition = state[0]
+    cornersLeft = list(state[1])
+    dist = 0
+    nextPoint = pacmanPosition
+    while cornersLeft:
+        dists = []
+        for c in cornersLeft:
+            dists += [(util.manhattanDistance(nextPoint, c), c)]
+        (minDist, nearestCorner) = min(dists, key = lambda x: x[0])
+        dist += minDist
+        cornersLeft.remove(nearest)
+        nextPoint = nearestCorner
+    return dist
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"

@@ -86,6 +86,8 @@ def search(problem, fringe):
             for candidate in candidate_successors:
                 fringe.push(candidate)
 
+# Cuestion 1
+
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first
@@ -100,13 +102,17 @@ def depthFirstSearch(problem):
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
-    return generalSearch(problem, util.Stack())
+    return generalUninformedSearch(problem, util.Stack())
+
+# Cuestion 2
 
 def breadthFirstSearch(problem):
     """
     Search the shallowest nodes in the search tree first.
     """
-    return generalSearch(problem, util.Queue())
+    return generalUninformedSearch(problem, util.Queue())
+
+# Cuestion 3
 
 def uniformCostSearch(problem):
     "Search the node of least total cost first."
@@ -119,11 +125,15 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
+# Cuestion 4
+
 def aStarSearch(problem, heuristic=nullHeuristic):
     "Search the node that has the lowest combined cost and heuristic first."
     return generalInformedSearch(problem, util.PriorityQueue(), heuristic)
 
-def generalSearch(problem, expanded):
+# Utilizada en cuestiones 1 y 2
+
+def generalUninformedSearch(problem, expanded):
     visited = []
     expanded.push((problem.getStartState(), []))
     while not expanded.isEmpty():
@@ -134,6 +144,8 @@ def generalSearch(problem, expanded):
             visited += [state]
             for (successor, direction, _) in problem.getSuccessors(state):
                 expanded.push((successor, path + [direction]))
+
+# Utilizada en cuestiones 3 y 4
 
 def generalInformedSearch(problem, expanded, heuristic):
     visited = []
